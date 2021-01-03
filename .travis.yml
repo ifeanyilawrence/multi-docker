@@ -3,21 +3,21 @@ services:
   - docker
 
 before_install:
-  - docker build -t $DOCKER_ID/react-test -f ./client/Dockerfile.dev ./client
+  - docker build -t ifeanyilawrence/react-test -f ./client/Dockerfile.dev ./client
 
 script:
-  - docker run $DOCKER_ID/react-test yarn test
+  - docker run ifeanyilawrence/react-test yarn test
 
 after_success:
-  - docker build -t $DOCKER_ID/multi-client ./client
-  - docker build -t $DOCKER_ID/multi-nginx ./nginx
-  - docker build -t $DOCKER_ID/multi-server ./server
-  - docker build -t $DOCKER_ID/multi-worker ./worker
+  - docker build -t ifeanyilawrence/multi-client ./client
+  - docker build -t ifeanyilawrence/multi-nginx ./nginx
+  - docker build -t ifeanyilawrence/multi-server ./server
+  - docker build -t ifeanyilawrence/multi-worker ./worker
   # Login to the docker CLI
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
   # Take those images and push them to docker hub
-  - docker push $DOCKER_ID/multi-client
-  - docker push $DOCKER_ID/multi-nginx
-  - docker push $DOCKER_ID/multi-server
-  - docker push $DOCKER_ID/multi-worker
+  - docker push ifeanyilawrence/multi-client
+  - docker push ifeanyilawrence/multi-nginx
+  - docker push ifeanyilawrence/multi-server
+  - docker push ifeanyilawrence/multi-worker
   
