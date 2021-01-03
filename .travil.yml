@@ -1,0 +1,23 @@
+sudo: required
+services:
+  - docker
+
+before_install:
+  - docker build -t ifeanyilawrence/react-test -f ./client/Dockerfile.dev ./client
+
+script:
+  - docker run ifeanyilawrence/react-test yarn test
+
+after_success:
+  - docker build -t ifeanyilawrence/multi-client ./client
+  - docker build -t ifeanyilawrence/multi-nginx ./nginx
+  - docker build -t ifeanyilawrence/multi-server ./server
+  - docker build -t ifeanyilawrence/multi-worker ./worker
+  # Login to the docker CLI
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  # Take those images and push them to docker hub
+  - docker push ifeanyilawrence/multi-client
+  - docker push ifeanyilawrence/multi-nginx
+  - docker push ifeanyilawrence/multi-server
+  - docker push ifeanyilawrence/multi-worker
+  
